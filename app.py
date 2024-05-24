@@ -34,5 +34,5 @@ def models(text, model="Mixtral 8x7B"):
 
     return output
 
-demo = gr.Interface(fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Llama 3 8B','Mistral 7B v0.3','Phi 3 mini', ], value="Mistral 7B v0.3", label="Select Model") ], outputs="text", live=True)
+demo = gr.Interface(fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Llama 3 8B','Mistral 7B v0.3','Phi 3 mini', ], value="Mistral 7B v0.3", label="Select Model") ], outputs="text", live=True, batch=True, max_batch_size=1000)
 demo.launch()
