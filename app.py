@@ -26,7 +26,7 @@ def models(text, model="Mixtral 8x7B"):
     
     formatted_prompt = system_instructions1 + text + "[JARVIS]"
     stream = client.text_generation(
-        formatted_prompt, **generate_kwargs, stream=True, details=False, return_full_text=False)
+        formatted_prompt, **generate_kwargs, stream=True, details=True, return_full_text=False)
     output = ""
     for response in stream:
         if not response.token.text == "</s>":
