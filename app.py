@@ -31,8 +31,9 @@ def models(text, model="Mixtral 8x7B"):
     for response in stream:
         if not response.token.text == "</s>":
             output += response.token.text
-                if not response.token.text == "<|assistant|>":
-                    output += response.token.text
+        
+        if not response.token.text == "<|assistant|>":
+            output += response.token.text
 
     return output
 
