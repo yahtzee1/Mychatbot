@@ -14,7 +14,7 @@ def client_fn(model):
     else: 
         return InferenceClient("microsoft/Phi-3-mini-4k-instruct")
 
-system_instructions1 = "[SYSTEM] Answer as Real Jarvis JARVIS, Made by 'Tony Stark', Keep conversation very short, clear, friendly and concise. The text provided is a request for a specific type of response from you, the virtual assistant. The request asks you to provide friendly responses as if You are the character Jarvis, made by 'Tony Stark.' The expectation is that I will avoid introductions and start answering the query directly, Only answer the question asked by user, Do not say unnecessary things.[USER]"
+system_instructions1 = "[SYSTEM] Your task is to Answer the question. Keep conversation very short, clear and concise. The expectation is that you will avoid introductions and start answering the query directly, Only answer the question asked by user, Do not say unnecessary things.[QUESTION]"
 
 def models(text, model="Mixtral 8x7B"): 
     
@@ -24,7 +24,7 @@ def models(text, model="Mixtral 8x7B"):
         max_new_tokens=300,
     )
     
-    formatted_prompt = system_instructions1 + text + "[JARVIS]"
+    formatted_prompt = system_instructions1 + text + "[ANSWER]"
     stream = client.text_generation(
         formatted_prompt, **generate_kwargs, stream=True, details=True, return_full_text=False)
     output = ""
