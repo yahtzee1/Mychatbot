@@ -29,12 +29,16 @@ def models(text, model="Mixtral 8x7B"):
         formatted_prompt, **generate_kwargs, stream=True, details=True, return_full_text=False)
     output = ""
     for response in stream:
-        if not response.token.text == "</s>":
-            output += response.token.text
+        if "Phi" in model:
+            if not response.token.text == "<|assistant|>":
+                output += response.token.text
+        else:      
+            if not response.token.text == "</s>":
+                output += response.token.text
     return output
 
 description="""# Chat GO
-### Inspired from Goggle Go"""
+### Inspired from Google Go"""
 
 demo = gr.Interface(description=description,fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Llama 3 8B','Mistral 7B v0.3','Phi 3 mini', ], value="Mistral 7B v0.3", label="Select Model") ], outputs="text", live=True, batch=True, max_batch_size=1000)
 demo.launch()
