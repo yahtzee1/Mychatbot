@@ -22,17 +22,18 @@ def models(text, model="Mixtral 8x7B"):
     
     generate_kwargs = dict(
         max_new_tokens=300,
+        do_sample=True,
     )
     
     formatted_prompt = system_instructions1 + text + "[ANSWER]"
-    stream = client.text_generation(
-        formatted_prompt, **generate_kwargs, stream=True, details=True, return_full_text=False)
+    stream = client.text_generation(formatted_prompt, **generate_kwargs, stream=True, details=True, return_full_text=False)
     output = ""
     for response in stream:        
-        if not response.token.text == "</s>":
-            output += response.token.text
-            if output.endswith("<|assistant|>"):
-                output = output[:-13]
+        output+=response.token.text
+        if output.endswith("<|assistant|>"):
+            output = output[:-13]
+        elif output.endswith("</s>"):
+            output = output[:-4]
     return output
 
 description="""# Chat GO
