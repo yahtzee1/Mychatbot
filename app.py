@@ -30,8 +30,8 @@ def models(text, model="Mixtral 8x7B"):
     output = ""
     for response in stream:
         if "Phi" in model:
-            if not response.token.text == "<|assistant|>":
-                output += response.token.text
+            if output.endswith("<|assistant|>"):
+                output = output(-13)
         else:      
             if not response.token.text == "</s>":
                 output += response.token.text
@@ -40,5 +40,5 @@ def models(text, model="Mixtral 8x7B"):
 description="""# Chat GO
 ### Inspired from Google Go"""
 
-demo = gr.Interface(description=description,fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Nous Hermes Mixtral 8x7B DPO','StarChat2 15b','Mistral 7B v0.3','Phi 3 mini', ], value="Mistral 7B v0.3", label="Select Model") ], outputs="text", live=True, batch=True, max_batch_size=1000)
+demo = gr.Interface(description=description,fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Nous Hermes Mixtral 8x7B DPO','StarChat2 15b','Mistral 7B v0.3','Phi 3 mini', ], value="Phi 3 mini", label="Select Model") ], outputs="text", live=True, batch=True, max_batch_size=1000)
 demo.launch()
