@@ -28,13 +28,11 @@ def models(text, model="Mixtral 8x7B"):
     stream = client.text_generation(
         formatted_prompt, **generate_kwargs, stream=True, details=True, return_full_text=False)
     output = ""
-    for response in stream:
-        if "Phi" in model:
-            output = output[:-13]
-        yield output
-        
+    for response in stream:        
         if not response.token.text == "</s>":
             output += response.token.text
+            if output.endswith("<end_of_utterance>"):
+                output = output[:-13]
     return output
 
 description="""# Chat GO
