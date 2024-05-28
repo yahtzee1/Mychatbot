@@ -32,9 +32,9 @@ def models(text, model="Mixtral 8x7B"):
         if "Phi" in model:
             output = output[:-13]
         yield output
-        else:      
-            if not response.token.text == "</s>":
-                output += response.token.text
+        
+        if not response.token.text == "</s>":
+            output += response.token.text
     return output
 
 description="""# Chat GO
