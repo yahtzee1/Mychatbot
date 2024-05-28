@@ -30,8 +30,8 @@ def models(text, model="Mixtral 8x7B"):
     output = ""
     for response in stream:
         if "Phi" in model:
-            if output.endswith("<|assistant|>"):
-                output = output[:-13]
+            output = output[:-13]
+        yield output
         else:      
             if not response.token.text == "</s>":
                 output += response.token.text
