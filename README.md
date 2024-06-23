@@ -6,7 +6,7 @@ colorTo: indigo
 sdk: gradio
 sdk_version: 4.31.5
 app_file: app.py
-pinned: true
+pinned: false
 short_description: Chat with AI with ⚡Lightning Speed
 ---
 
