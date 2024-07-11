@@ -21,7 +21,7 @@ def models(text, model="Mixtral 8x7B"):
     client = client_fn(model)
     
     generate_kwargs = dict(
-        max_new_tokens=300,
+        max_new_tokens=100,
         do_sample=True,
     )
     
