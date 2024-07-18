@@ -7,6 +7,8 @@ system_instructions = "[SYSTEM] Your task is to Answer the question. Keep conver
 
 def models(message): 
     
+    messages = []
+    
     messages.append({"role": "user", "content": f"[SYSTEM] You are REAL TIME QnA AI who answer question asked by uer in short and concise [USER] {message}"})
 
     response = ""
