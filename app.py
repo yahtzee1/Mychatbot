@@ -12,7 +12,7 @@ def client_fn(model):
     elif "Phi" in model:
         return InferenceClient("microsoft/Phi-3-mini-4k-instruct")
     else: 
-        return InferenceClient("mistralai/Mixtral-8x7B-Instruct-v0.1")
+        return InferenceClient("google/gemma-1.1-2b-it")
 
 system_instructions1 = "[SYSTEM] Your task is to Answer the question. Keep conversation very short, clear and concise. The expectation is that you will avoid introductions and start answering the query directly, Only answer the question asked by user, Do not say unnecessary things.[QUESTION]"
 
@@ -36,9 +36,8 @@ def models(text, model="Mixtral 8x7B"):
             output = output[:-4]
     return output
 
-description="""# Chat GO
-### Inspired from Google Go"""
+description="# Chat GO"
 
-demo = gr.Interface(description=description,fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Nous Hermes Mixtral 8x7B DPO','StarChat2 15b','Mistral 7B v0.3','Phi 3 mini', ], value="Mistral 7B v0.3", label="Select Model") ], outputs="text", live=True, batch=True, max_batch_size=10000)
+demo = gr.Interface(description=description,fn=models, inputs=["text", gr.Dropdown([ 'Mixtral 8x7B','Nous Hermes Mixtral 8x7B DPO','StarChat2 15b','Mistral 7B v0.3','Phi 3 mini', 'FASTEST' ], value="FASTEST", label="Select Model") ], outputs="text", live=True, batch=True, max_batch_size=10000)
 demo.queue(max_size=300000)
 demo.launch()
