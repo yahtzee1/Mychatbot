@@ -29,9 +29,7 @@ def respond(
         response += token
         yield response
 
-with gr.Blocks as demo:
-    gr.Markdown("# CHAT with AI faster Than Groq")
-    gr.ChatInterface(respond)
+gr.ChatInterface(respond, description="# Chat With AI faster than groq")
 
 if __name__ == "__main__":
     demo.launch()
