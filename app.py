@@ -23,7 +23,7 @@ def models(message):
         response += token
         yield response
 
-description="# Chat GO"
+description="# Chat GO\n###Enter your query and Press enter and get response faster than groq"
 
 demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
 demo.queue(max_size=300000)
