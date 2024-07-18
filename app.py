@@ -29,7 +29,6 @@ def respond(
         response += token
         yield response
 
-gr.ChatInterface(respond, description="# Chat With AI faster than groq")
+demo = gr.ChatInterface(respond, description="# Chat With AI faster than groq")
 
-if __name__ == "__main__":
-    demo.launch()
+demo.launch()
