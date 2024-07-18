@@ -3,32 +3,26 @@ from huggingface_hub import InferenceClient
 
 client = InferenceClient("google/gemma-1.1-2b-it")
 
-def respond(
-    message,
-    history: list[tuple[str, str]],
-    max_tokens
-):
+def models(Query): 
+    
     messages = []
+    
+    messages.append({"role": "user", "content": f"[SYSTEM] You are ASSISTANT who answer question asked by user in short and concise manner. [USER] {Query}"})
 
-    for val in history:
-        if val[0]:
-            messages.append({"role": "user", "content": val[0]})
-        if val[1]:
-            messages.append({"role": "assistant", "content": val[1]})
-
-    messages.append({"role": "user", "content": message})
-
-    response = ""
+    Response = ""
 
     for message in client.chat_completion(
         messages,
-        max_tokens=1024,
+        max_tokens=2048,
         stream=True
     ):
         token = message.choices[0].delta.content
-        response += token
-        yield response
 
-demo = gr.ChatInterface(respond, description="# Chat With AI faster than groq")
+        Response += token
+        yield Response
 
+description="# Chat GO\n### Enter your query and Press enter and get lightning fast response"
+
+demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
+demo.queue(max_size=300000)
 demo.launch()
