@@ -9,7 +9,7 @@ def models(message):
     
     messages = []
     
-    messages.append({"role": "user", "content": f"[SYSTEM] You are REAL TIME QnA AI who answer question asked by uer in short and concise [USER] {message}"})
+    messages.append({"role": "user", "content": f"[SYSTEM] You are ASSISTANT who answer question asked by user in short and concise manner. [USER] {message}"})
 
     response = ""
 
@@ -25,6 +25,6 @@ def models(message):
 
 description="# Chat GO"
 
-demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text", live=True, batch=True, max_batch_size=10000)
+demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text", batch=True, max_batch_size=10000)
 demo.queue(max_size=300000)
 demo.launch()
