@@ -3,28 +3,35 @@ from huggingface_hub import InferenceClient
 
 client = InferenceClient("google/gemma-1.1-2b-it")
 
-system_instructions = "[SYSTEM] Your task is to Answer the question. Keep conversation very short, clear and concise. The expectation is that you will avoid introductions and start answering the query directly, Only answer the question asked by user, Do not say unnecessary things.[QUESTION]"
-
-def models(Query): 
-    
+def respond(
+    message,
+    history: list[tuple[str, str]],
+    max_tokens
+):
     messages = []
-    
-    messages.append({"role": "user", "content": Query})
 
-    Response = ""
+    for val in history:
+        if val[0]:
+            messages.append({"role": "user", "content": val[0]})
+        if val[1]:
+            messages.append({"role": "assistant", "content": val[1]})
+
+    messages.append({"role": "user", "content": message})
+
+    response = ""
 
     for message in client.chat_completion(
         messages,
-        max_tokens=2048,
+        max_tokens=1024,
         stream=True
     ):
         token = message.choices[0].delta.content
+        response += token
+        yield response
 
-        Response += token
-        yield Response
+with gr.Blocks as demo:
+    gr.Markdown("# CHAT with AI faster Than Groq")
+    gr.ChatInterface(respond)
 
-description="# Chat GO\n### Enter your query and Press enter and get response faster than groq"
-
-demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
-demo.queue(max_size=300000)
-demo.launch()
+if __name__ == "__main__":
+    demo.launch()
