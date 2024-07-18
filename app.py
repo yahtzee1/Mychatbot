@@ -25,6 +25,6 @@ def models(message):
 
 description="# Chat GO"
 
-demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text", batch=True, max_batch_size=10000)
+demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
 demo.queue(max_size=300000)
 demo.launch()
