@@ -1,28 +1,42 @@
 import gradio as gr
 from huggingface_hub import InferenceClient
 
-client = InferenceClient("google/gemma-1.1-2b-it")
+# Initialize the inference client with the specific model from Hugging Face.
+client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 
-def models(Query): 
-    
-    messages = []
-    
-    messages.append({"role": "user", "content": f"[SYSTEM] You are ASSISTANT who answer question asked by user in short and concise manner. [USER] {Query}"})
+def answer_question(question):
+   
 
-    Response = ""
+    # Prepare the messages for the model in the structured format
+    messages = [{"role": "system", "content": "Query based on user role and input"}]
+    messages.append({"role": "user", "content": question})
 
-    for message in client.chat_completion(
+    response = ""
+    # Stream the response from the model
+    for message_chunk in client.chat_completion(
         messages,
-        max_tokens=2048,
+        max_tokens=params[2048],
         stream=True
     ):
-        token = message.choices[0].delta.content
+        # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
+        token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
+        response += token
+        yield response  # Yield response directly
 
-        Response += token
-        yield Response
+# Define the interface description and settings.
+description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
 
-description="# Chat GO\n### Enter your query and Press enter and get lightning fast response"
+with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
+    with gr.Row():
+        question = gr.Textbox(label="Enter your question")
+    with gr.Row():
+        button = gr.Button("Submit")
+    output = gr.Textbox(label="Model Response")
+    
+    button.click(fn=answer_question, inputs=[question], outputs=output)
 
-demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
+# Enable queuing to manage high demand if needed.
 demo.queue(max_size=300000)
+
+# Launch the Gradio web interface.
 demo.launch()
