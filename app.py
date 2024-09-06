@@ -17,7 +17,7 @@ def answer_question(role,question):
     elif role == 'Student':
         params["temperature"] = 0.5  # Moderately creative, good for learning
         params["max_tokens"] = 100  # Concise explanations
-        elif role == "Don't Care":
+    elif role == "Don't Care":
         params["temperature"] = 1.0  # More creative and diverse responses
     
 
