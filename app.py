@@ -4,57 +4,45 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("google/gemma-1.1-2b-it")
 
-def respond(
-    message,
-    history: list[tuple[str, str]],
-    system_message="You are a friendly Chatbot.",
-    max_tokens=512,
-    temperature=0.7,
-    top_p=0.95,
-    use_local_model=False,
-):
-   
-    # Initialize history if it's None
-    if history is None:
-        history = []
+def answer_question(role, question):
+    # Define default parameters for the language model.
+    params = {
+        "max_tokens": 150,
+        "temperature": 0.7  # Default temperature
+    }
 
-    
-    
-    # API-based inference 
-    messages = [{"role": "system", "content": system_message}]
-    for val in history:
-        if val[0]:
-            messages.append({"role": "user", "content": val[0]})
-        if val[1]:
-            messages.append({"role": "assistant", "content": val[1]})
-    messages.append({"role": "user", "content": message})
+    # Adjust parameters based on the role
+    if role == 'Professor':
+        params["temperature"] = 0.3  # More precise and deterministic
+        params["max_tokens"] = 200  # Potentially more detailed responses
+    elif role == 'Student':
+        params["temperature"] = 0.5  # Moderately creative, good for learning
+        params["max_tokens"] = 100  # Concise explanations
+    # "Don't Care" uses the default parameters set initially
+
+    # Prepare the messages for the model in the structured format
+    messages = [{"role": "system", "content": "Query based on user role and input"}]
+    messages.append({"role": "user", "content": question})
 
     response = ""
+    # Stream the response from the model
     for message_chunk in client.chat_completion(
         messages,
-        max_tokens=max_tokens,
-        stream=True,
-        temperature=temperature,
-        top_p=top_p,
+        max_tokens=params["max_tokens"],
+        temperature=params["temperature"],
+        stream=True
     ):
-        if stop_inference:
-            response = "Inference cancelled."
-            yield history + [(message, response)]
-            return
-        if stop_inference:
-            response = "Inference cancelled."
-            break
-        token = message_chunk.choices[0].delta.content
+        # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
+        token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
         response += token
-        yield history + [(message, response)]  # Yield history + new response
+        yield response  # Yield response directly
 
 # Define the interface description and settings.
 description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
 
 with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
     with gr.Row():
-        # Set a default value for the role to ensure something is always selected.
-        role = gr.Radio(choices=["Don't Care"], label="Select your role", type="index", value="Don't Care")
+        role = gr.Radio(choices=["Professor", "Student", "Don't Care"], label="Select your role", type="index", value="Don't Care")
     with gr.Row():
         question = gr.Textbox(label="Enter your question")
     with gr.Row():
