@@ -7,7 +7,7 @@ client = InferenceClient("google/gemma-1.1-7b-it")
 def answer_question(role,question):
 
     params = {
-        "maxtoken":150
+        "maxtoken":150,
         "temperature": 0.7
     }
 
