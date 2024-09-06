@@ -35,7 +35,8 @@ description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query bel
 
 with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
     with gr.Row():
-        role = gr.Radio(choices=["Professor", "Student", "Don't Care"], label="Select your role", type="index")
+        # Set a default value for the role to ensure something is always selected.
+        role = gr.Radio(choices=["Professor", "Student", "Don't Care"], label="Select your role", type="index", value="Don't Care")
     with gr.Row():
         question = gr.Textbox(label="Enter your question")
     with gr.Row():
