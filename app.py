@@ -4,31 +4,49 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("google/gemma-1.1-2b-it")
 
-def answer_question(role, question):
-    # Define default parameters for the language model.
-    params = {
-        "max_tokens": 150,
-        "temperature": 0.7  # Default temperature
-    }
+def respond(
+    message,
+    history: list[tuple[str, str]],
+    system_message="You are a friendly Chatbot.",
+    max_tokens=512,
+    temperature=0.7,
+    top_p=0.95,
+    use_local_model=False,
+):
+   
+    # Initialize history if it's None
+    if history is None:
+        history = []
 
-    # Adjust parameters based on the role
-    if role == 'Professor':
-        params["temperature"] = 0.3  # More precise and deterministic
-        params["max_tokens"] = 200  # Potentially more detailed responses
-    elif role == 'Student':
-        params["temperature"] = 0.7  # A balance between creativity and coherence
-        params["max_tokens"] = 100  # Concise explanations
-    elif role == "Don't Care":
-        params["temperature"] = 1.0  # More creative and diverse responses
+    
+    
+    # API-based inference 
+    messages = [{"role": "system", "content": system_message}]
+    for val in history:
+        if val[0]:
+            messages.append({"role": "user", "content": val[0]})
+        if val[1]:
+            messages.append({"role": "assistant", "content": val[1]})
+    messages.append({"role": "user", "content": message})
 
-    # Modify the query based on the role and send it to the model.
-    modified_query = f"{question}"
-    response = client.chat_completion(
-        messages=[{"role": "user", "content": modified_query}],
-        **params
-    )
-
-    return response.choices[0].text
+    response = ""
+    for message_chunk in client.chat_completion(
+        messages,
+        max_tokens=max_tokens,
+        stream=True,
+        temperature=temperature,
+        top_p=top_p,
+    ):
+        if stop_inference:
+            response = "Inference cancelled."
+            yield history + [(message, response)]
+            return
+        if stop_inference:
+            response = "Inference cancelled."
+            break
+        token = message_chunk.choices[0].delta.content
+        response += token
+        yield history + [(message, response)]  # Yield history + new response
 
 # Define the interface description and settings.
 description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
