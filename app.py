@@ -30,7 +30,6 @@ def answer_question(role, question):
         messages,
         max_tokens=params["max_tokens"],
         temperature=params["temperature"],
-        stream=True
     ):
         # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
         token = message_chunk.choices[0].text  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
