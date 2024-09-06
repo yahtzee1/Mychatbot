@@ -18,7 +18,7 @@ def answer_question(role, question):
     elif role == 'Student':
         params["temperature"] = 0.5
         params["max_tokens"] = 100
-    elif role == 'Don't Care':
+    elif role == "Don't Care":
         params["temperature"] = 1
         params["max_tokens"] = 150
 
