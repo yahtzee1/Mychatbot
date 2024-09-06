@@ -26,14 +26,7 @@ def models(query):
 # Define the interface description and settings.
 description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
 
-with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
-    with gr.Row():
-        question = gr.Textbox(label="Enter your question")
-    with gr.Row():
-        button = gr.Button("Submit")
-    output = gr.Textbox(label="Model Response")
-    
-    button.click(fn=models, inputs=[question], outputs=output)
+demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
 
 # Enable queuing to manage high demand if needed.
 demo.queue(max_size=300000)
