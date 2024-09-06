@@ -5,20 +5,7 @@ from huggingface_hub import InferenceClient
 client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 
 def answer_question(role, question):
-    # Define default parameters for the language model.
-    params = {
-        "max_tokens": 150,
-        "temperature": 0.7  # Default temperature
-    }
-
-    # Adjust parameters based on the role
-    if role == 'Professor':
-        params["temperature"] = 0.3  # More precise and deterministic
-        params["max_tokens"] = 200  # Potentially more detailed responses
-    elif role == 'Student':
-        params["temperature"] = 0.5  # Moderately creative, good for learning
-        params["max_tokens"] = 100  # Concise explanations
-    # "Don't Care" uses the default parameters set initially
+   
 
     # Prepare the messages for the model in the structured format
     messages = [{"role": "system", "content": "Query based on user role and input"}]
@@ -40,8 +27,6 @@ def answer_question(role, question):
 description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
 
 with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
-    with gr.Row():
-        role = gr.Radio(choices=["Professor", "Student", "Don't Care"], label="Select your role", type="index", value="Don't Care")
     with gr.Row():
         question = gr.Textbox(label="Enter your question")
     with gr.Row():
