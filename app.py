@@ -32,9 +32,9 @@ def answer_question(role,question):
     
     
         # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
-        token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
-        response += token
-        yield response  # Yield response directly
+    token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
+    response += token
+    yield response  # Yield response directly
 
 # Define the interface description and settings.
 description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
