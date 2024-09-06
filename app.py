@@ -33,7 +33,7 @@ with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size:
         button = gr.Button("Submit")
     output = gr.Textbox(label="Model Response")
     
-    button.click(fn=models, inputs=[query], outputs=output)
+    button.click(fn=models, inputs=[question], outputs=output)
 
 # Enable queuing to manage high demand if needed.
 demo.queue(max_size=300000)
