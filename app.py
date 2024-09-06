@@ -4,7 +4,7 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("google/gemma-1.1-2b-it")
 
-def answer_question(question):
+def answer_question(role, question):
     # Define default parameters for the language model.
     params = {
         "max_tokens": 150,
@@ -51,7 +51,7 @@ with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size:
         button = gr.Button("Submit")
     output = gr.Textbox(label="Model Response")
     
-    button.click(fn=answer_question, inputs=[question], outputs=output)
+    button.click(fn=answer_question, inputs=[role, question], outputs=output)
 
 # Enable queuing to manage high demand if needed.
 demo.queue(max_size=300000)
