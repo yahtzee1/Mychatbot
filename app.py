@@ -2,7 +2,7 @@ import gradio as gr
 from huggingface_hub import InferenceClient
 
 # Initialize the inference client with the specific model from Hugging Face.
-client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
+client = InferenceClient("google/gemma-1.1-2b-it")
 
 def models(query):
    
