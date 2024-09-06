@@ -8,7 +8,7 @@ def answer_question(question):
    
 
     # Prepare the messages for the model in the structured format
-    messages = [{"role": "system", "content": "Query based on user role and input"}]
+    messages = []
     messages.append({"role": "user", "content": question})
 
     response = ""
