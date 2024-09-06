@@ -4,7 +4,7 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("google/gemma-1.1-2b-it")
 
-def answer_question(role, question):
+def answer_question(question):
     # Define default parameters for the language model.
     params = {
         "max_tokens": 150,
