@@ -1,7 +1,7 @@
 import gradio as gr
 from huggingface_hub import InferenceClient
 
-client = InferenceClient("google/gemma-1.1-2b-it")
+client = InferenceClient("google/gemma-1.1-7b-it")
 
 def models(Query): 
     
