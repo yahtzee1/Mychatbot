@@ -33,7 +33,7 @@ def answer_question(role, question):
         stream=True
     ):
         # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
-        token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
+        token = message_chunk.choices[0].text  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
         response += token
         yield response  # Yield response directly
 
