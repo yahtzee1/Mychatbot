@@ -4,37 +4,39 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("google/gemma-1.1-7b-it")
 
-def answer_question(role,question):
-
+def answer_question(role, question):
+    # Define default parameters for the language model.
     params = {
-        "max_tokens":150,
-        "temperature": 0.7
+        "max_tokens": 150,
+        "temperature": 0.7  # Default temperature
     }
 
+    # Adjust parameters based on the role
     if role == 'Professor':
-        params["temperature"] = 0.3  # More precise and deterministic
-        params["max_tokens"] = 200  # Potentially more detailed responses
+        params["temperature"] = 0.3
+        params["max_tokens"] = 200
     elif role == 'Student':
-        params["temperature"] = 0.5  # Moderately creative, good for learning
-        params["max_tokens"] = 100  # Concise explanations
-    
+        params["temperature"] = 0.5
+        params["max_tokens"] = 100
+    elif role == 'Don't Care':
+        params["temperature"] = 1
+        params["max_tokens"] = 150
 
-    # Prepare the messages for the model in the structured format
-    messages = [{"role": "system", "content": "Query based on user role and input"}]
-    messages.append({"role": "user", "content": question})
+    # Prepare the messages for the model without using 'system' role
+    messages = [{"role": "user", "content": question}]
 
     response = ""
+    try:
+        for message_chunk in client.chat_completion(
+            messages,
+            max_tokens=params["max_tokens"],
+            temperature=params["temperature"],
+        ):
+            response += message_chunk["text"]
+        yield response
+    except Exception as e:
+        yield f"An error occurred: {str(e)}"
 
-    
-    for message_chunk in client.chat_completion(
-        messages,
-        max_tokens=params["max_tokens"],
-        temperature=params["temperature"],
-        stream=True
-    ):
-        token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
-        response += token
-        yield response  # Yield response directly
     
     
 # Define the interface description and settings.
