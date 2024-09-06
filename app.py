@@ -4,7 +4,7 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 
-def answer_question(role, question):
+def answer_question(question):
    
 
     # Prepare the messages for the model in the structured format
@@ -33,7 +33,7 @@ with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size:
         button = gr.Button("Submit")
     output = gr.Textbox(label="Model Response")
     
-    button.click(fn=answer_question, inputs=[role, question], outputs=output)
+    button.click(fn=answer_question, inputs=[question], outputs=output)
 
 # Enable queuing to manage high demand if needed.
 demo.queue(max_size=300000)
