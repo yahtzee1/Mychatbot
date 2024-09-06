@@ -21,7 +21,7 @@ def models(Query):
         Response += token
         yield Response
 
-description="# Chat GO\n### Enter your query and Press enter and get lightning fast response"
+description="# Personify\n### Enter what you want and get a response in the way you like."
 
 demo = gr.Interface(description=description,fn=models, inputs=["text"], outputs="text")
 demo.queue(max_size=300000)
