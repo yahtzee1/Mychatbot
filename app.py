@@ -4,22 +4,22 @@ from huggingface_hub import InferenceClient
 # Initialize the inference client with the specific model from Hugging Face.
 client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 
-def answer_question(question):
+def models(query):
    
 
     # Prepare the messages for the model in the structured format
-    messages = [{"role": "system", "content": "Query based on user role and input"}]
-    messages.append({"role": "user", "content": question})
+    messages = []
+    messages.append({"role": "user", "content": f"[SYSTEM] You are ASSISTANT who answer question asked by user in short and concise manner. [USER] {query}"})
 
     response = ""
-    # Stream the response from the model
+    
     for message_chunk in client.chat_completion(
         messages,
-        max_tokens=params["max_tokens"],
-        temperature=params["temperature"],
+        max_tokens=params[2048],
+        stream =True
     ):
         # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
-        token = message_chunk.choices[0].text  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
+        token = message_chunk.choices[0].delta.content  # Adjust to message_chunk.choices[0].text if delta.content is incorrect
         response += token
         yield response  # Yield response directly
 
