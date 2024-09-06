@@ -1,13 +1,13 @@
 ---
-title: Real Time Chat With AI
-emoji: ⚡
+title: Chatbot personalizer
+emoji: 👁
 colorFrom: blue
-colorTo: indigo
+colorTo: purple
 sdk: gradio
-sdk_version: 4.31.5
+sdk_version: 4.43.0
 app_file: app.py
 pinned: false
-short_description: Chat with AI with ⚡Lightning Speed
+short_description: Chat and receive personalized responses based on preference.
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
