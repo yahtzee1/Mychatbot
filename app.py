@@ -34,7 +34,17 @@ demo = gr.Interface(
     inputs=["text"], 
     outputs="text",
     examples=[["What is the weather like today?"]],
-    allow_flagging="never"
+    allow_flagging="never",
+    gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
+    with gr.Row():
+        role = gr.Radio(choices=["Professor", "Student", "Don't Care"], label="Select your role", type="index")
+    with gr.Row():
+        question = gr.Textbox(label="Enter your question")
+    with gr.Row():
+        button = gr.Button("Submit")
+    output = gr.Textbox(label="Model Response")
+    
+    button.click(fn=answer_question, inputs=[role, question], outputs=output)
 )
 
 # Enable queuing to manage high demand if needed.
