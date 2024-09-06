@@ -15,7 +15,7 @@ def answer_question(question):
     # Stream the response from the model
     for message_chunk in client.chat_completion(
         messages,
-        max_tokens=params[2048],
+        max_tokens=2048,
         stream=True
     ):
         # Here, you would handle stop conditions or interruptions (not implemented in this snippet)
