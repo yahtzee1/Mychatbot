@@ -13,14 +13,14 @@ def answer_question(role, question):
 
     # Adjust parameters based on the role
     if role == 'Professor':
-        params["temperature"] = 0.3
-        params["max_tokens"] = 200
+        params["temperature"] = 0.2
+        params["max_tokens"] = 250
     elif role == 'Student':
         params["temperature"] = 0.5
-        params["max_tokens"] = 100
+        params["max_tokens"] = 350
     elif role == "Don't Care":
         params["temperature"] = 1
-        params["max_tokens"] = 150
+        params["max_tokens"] = 600
 
     # Prepare the messages for the model without using 'system' role
     messages = [{"role": "user", "content": question}]
