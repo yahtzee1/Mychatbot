@@ -2,7 +2,7 @@ import gradio as gr
 from huggingface_hub import InferenceClient
 
 # Initialize the inference client with the specific model from Hugging Face.
-client = InferenceClient(model="google/gemma-1.1-2b-it")
+client = InferenceClient(model="google/gemma-1.1-7b-it")
 
 def answer_question(role, question):
     # Define default parameters for the language model.
