@@ -13,14 +13,14 @@ def answer_question(role, question):
 
     # Adjust parameters based on the role
     if role == 'Professor':
-        params["temperature"] = 0.2
-        params["max_tokens"] = 250
+        params["temperature"] = 0.25
+        params["max_tokens"] = 400
     elif role == 'Student':
-        params["temperature"] = 0.5
-        params["max_tokens"] = 350
-    elif role == "Don't Care":
-        params["temperature"] = 1
+        params["temperature"] = 0.7
         params["max_tokens"] = 600
+    elif role == "Don't Care":
+        params["temperature"] = 2
+        params["max_tokens"] = 900
 
     # Prepare the messages for the model without using 'system' role
     messages = [{"role": "user", "content": question}]
@@ -37,7 +37,7 @@ def answer_question(role, question):
         return f"An error occurred: {str(e)}"
 
 # Define the interface description and settings.
-description = "# Interactive Chat with GEMMA-1.1-2B-IT\n### Enter your query below to receive a response from the model."
+description = "# Enter your query below to receive a response from the model."
 
 with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size: 16px; border-radius: 5px;}") as demo:
     with gr.Row():
@@ -51,7 +51,7 @@ with gr.Blocks(css=".button {margin: 5px; width: 150px; height: 50px; font-size:
     button.click(fn=answer_question, inputs=[role, question], outputs=output)
 
 # Enable queuing to manage high demand if needed.
-demo.queue(max_size=300000)
+demo.queue(max_size=30000)
 
 # Launch the Gradio web interface.
 demo.launch()
