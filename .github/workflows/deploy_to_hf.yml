@@ -3,7 +3,7 @@ name: Deploy to Hugging Face Spaces
 on:
   push:
     branches:
-      - main  # You can change this to the branch you want to use
+      - main  # Adjust to the branch you are using
 
 jobs:
   deploy:
@@ -20,5 +20,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          huggingface-cli repo create Case-study-1 --space sdk-python --private false
+          huggingface-cli repo create Case-study-1 --space_sdk gradio --private false -y
           huggingface-cli repo upload Case-study-1 --include "."
