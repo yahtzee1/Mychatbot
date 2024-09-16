@@ -20,5 +20,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          huggingface-cli repo create YOUR_SPACE_NAME --space sdk-python --private false
-          huggingface-cli repo upload YOUR_SPACE_NAME --include "."
+          huggingface-cli repo create Case-study-1 --space sdk-python --private false
+          huggingface-cli repo upload Case-study-1 --include "."
