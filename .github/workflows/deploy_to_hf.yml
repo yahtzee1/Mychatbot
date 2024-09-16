@@ -1,37 +1,34 @@
-name: Deploy to Hugging Face Spaces
+name: Sync to Hugging Face hub
 
 on:
   push:
-    branches:
-      - main  # Adjust to the branch you are using
+    branches: [main]
+
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  sync-to-huggingface:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          lfs: true 
+          fetch-depth: 0
 
       - name: Install Git LFS
         run: |
-          sudo apt-get install git-lfs
           git lfs install
 
-      - name: Configure Git
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Set up Git user
         run: |
           git config --global user.email "asroosh@wpi.edu"
-          git config --global user.name "Seayar"
-          git remote add hf https://huggingface.co/Seayar/Case-study-1
-          git fetch hf
-          git reset hf/main
+          git config --global user.name "Yahtzee1"
 
-      - name: Push Changes to Hugging Face
+      - name: Add Hugging Face remote and push to Spaces
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git add .
-          git commit -m "Deploy to Hugging Face Space"
-          git push hf HEAD:main
+          git remote add space https://huggingface.co/spaces/seayar/Case-study-1
+          git push --force "https://huggingface.co:${HF_TOKEN}@huggingface.co/spaces/Seayar/Case-study-1" main
