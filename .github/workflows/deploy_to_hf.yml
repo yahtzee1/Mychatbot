@@ -20,5 +20,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          huggingface-cli repo create Case-study-1 --space_sdk gradio --private false -y
+          huggingface-cli repo create Case-study-1 --space_sdk gradio -y
           huggingface-cli repo upload Case-study-1 --include "."
